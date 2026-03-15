@@ -1,0 +1,41 @@
+name: Autobump
+
+on:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    name: Check for new version
+    runs-on: macos-latest
+    steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Check for updates
+        id: livecheck
+        run: |
+          json=$(brew livecheck --cask stretchly --json)
+          new_version=$(echo "$json" | jq -r '.[0].version.latest')
+          current_version=$(echo "$json" | jq -r '.[0].version.current')
+          outdated=$(echo "$json" | jq -r '.[0].version.outdated')
+          {
+            echo "new_version=$new_version"
+            echo "current_version=$current_version"
+            echo "outdated=$outdated"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Bump cask PR
+        if: steps.livecheck.outputs.outdated == 'true'
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          brew bump-cask-pr stretchly \
+            --version "${{ steps.livecheck.outputs.new_version }}" \
+            --no-browse
