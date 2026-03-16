@@ -9,8 +9,12 @@ Homebrew [Tap](https://docs.brew.sh/Taps) for [Stretchly](https://hovancik.net/s
 ## Install
 
 ```sh
-brew install --cask hovancik/stretchly/stretchly
+brew install --cask --no-quarantine hovancik/stretchly/stretchly
 ```
+
+> **Security note:** The command above uses `--no-quarantine`, which reduces
+> macOS Gatekeeper protections. Only use this flag if you understand and accept
+> the security tradeoff.
 
 Or, if you prefer to tap first:
 
