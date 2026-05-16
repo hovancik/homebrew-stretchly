@@ -35,7 +35,7 @@ jobs:
         run: brew test-bot --only-tap-syntax
 
       - name: Audit cask
-        run: brew audit --cask hovancik/stretchly/stretchly
+        run: brew audit --cask --strict hovancik/stretchly/stretchly
 
       - name: Install cask
         run: brew install --cask hovancik/stretchly/stretchly
