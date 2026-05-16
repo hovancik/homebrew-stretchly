@@ -12,12 +12,13 @@ Homebrew [Tap](https://docs.brew.sh/Taps) for [Stretchly](https://hovancik.net/s
 brew install --cask hovancik/stretchly/stretchly
 ```
 
-Or, if you prefer to tap first:
-
-```sh
-brew tap hovancik/stretchly
-brew install --cask stretchly
-```
+> [!WARNING]
+> A `stretchly` cask also exists in the default `homebrew/cask` tap. It is
+> deprecated and [scheduled to be disabled on September 1, 2026](https://github.com/Homebrew/homebrew-cask/blob/main/Casks/s/stretchly.rb)
+> because the app is unsigned and fails Homebrew's Gatekeeper check.
+>
+> Until then, the bare name `stretchly` is ambiguous between the two taps.
+> Use the fully qualified `hovancik/stretchly/stretchly` to be sure you get this tap's version.
 
 > **Note:** Stretchly is not signed with an Apple Developer certificate. macOS
 > Gatekeeper may prevent it from opening. To allow it, run:
@@ -31,12 +32,12 @@ brew install --cask stretchly
 ## Update
 
 ```sh
-brew upgrade --cask stretchly
+brew upgrade --cask hovancik/stretchly/stretchly
 ```
 
 ## Uninstall
 
 ```sh
-brew uninstall --cask stretchly
+brew uninstall --cask hovancik/stretchly/stretchly
 brew untap hovancik/stretchly
 ```
