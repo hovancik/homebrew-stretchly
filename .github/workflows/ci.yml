@@ -10,32 +10,38 @@ on:
     paths:
       - "Casks/**"
       - ".github/workflows/ci.yml"
+  schedule:
+    - cron: "0 9 1 * *"
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 env:
   HOMEBREW_NO_AUTO_UPDATE: 1
+  HOMEBREW_DEVELOPER: 1
+  HOMEBREW_NO_INSTALL_FROM_API: 1
 
 jobs:
   test:
     name: Test
     runs-on: macos-latest
+    timeout-minutes: 30
+    env:
+      HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Set up Homebrew
-        id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
 
       - name: Run brew test-bot --only-tap-syntax
         run: brew test-bot --only-tap-syntax
 
       - name: Audit cask
-        run: brew audit --cask --strict hovancik/stretchly/stretchly
+        run: brew audit --cask --strict --online hovancik/stretchly/stretchly
 
       - name: Install cask
         run: brew install --cask hovancik/stretchly/stretchly
