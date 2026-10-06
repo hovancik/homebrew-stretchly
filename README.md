@@ -4,7 +4,7 @@ Homebrew [Tap](https://docs.brew.sh/Taps) for [Stretchly](https://hovancik.net/s
 
 ## Requirements
 
-- macOS Monterey (12) or later
+- macOS Ventura (13) or later
 
 ## Install
 
